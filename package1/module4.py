@@ -5,14 +5,13 @@ from email.mime.application import MIMEApplication
 from os.path import basename
 import email
 import re
-
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
 
-def send(archive, period):
+def send(archive):
     if not "emailPassword" in os.environ:
         raise ValueError("You should pass a email password")
 
@@ -33,10 +32,9 @@ def send(archive, period):
         print("Invalid email...")
         to = input("Try again:  ")
     print('Sending email to {}'.format(to))
-    html = "Hello, here you have the inform generated from the data analysis of suicides between {} and 2014. Enjoy it!".format(
-        period)
+    html = "Hello, here you have the inform generated from the data analysis of suicides. Enjoy it!"
     msg = MIMEMultipart('mixed')
-    msg['Subject'] = "Pipelines Project Inform {}-2014".format(period)
+    msg['Subject'] = "Pipelines Project Inform"
     msg['From'] = from_mail
     msg['To'] = to
     HTML_Contents = MIMEText(html, 'html')
@@ -50,7 +48,3 @@ def send(archive, period):
     server.sendmail(msg['From'], msg['To'], msg.as_string())
     print('Look in your email inbox, there you have!')
     server.close()
-
-
-def emailing(a, y):
-    send(a, y)
