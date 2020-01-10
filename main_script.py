@@ -3,6 +3,7 @@ from package1 import cleaning
 from package1 import scraping
 from package1 import report
 from package1 import emailing
+from sqlalchemy import create_engine
 
 sqlitedb_path = './data/raw/mmaragon.db'
 

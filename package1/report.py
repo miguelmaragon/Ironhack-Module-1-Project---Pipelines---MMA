@@ -11,11 +11,15 @@ def report(results_merge_data_add_info):
     report1 = pd.DataFrame(results_merge_data_add_info.groupby('Sector')['Name'].count().sort_values(ascending=False))
     report1.rename(columns={'Name': 'Count'}, inplace=True)
     report1['Percentage'] = round(report1.Count / sum(report1.Count) * 100, 1)
+    report1 = report1.reset_index()
+    report1.index += 1
     reports.append('report1')
 
     report2 = pd.DataFrame(results_merge_data_add_info.groupby('Gender')['Name'].count().sort_values(ascending=False))
     report2.rename(columns={'Name': 'Count'}, inplace=True)
     report2['Percentage'] = round(report2.Count / sum(report2.Count) * 100, 1)
+    report2 = report2.reset_index()
+    report2.index += 1
     reports.append('report2')
 
     report3 = pd.DataFrame(
@@ -24,15 +28,15 @@ def report(results_merge_data_add_info):
             ['min', 'max', 'mean', 'median', 'std']))
     reports.append('report3')
 
-    mpg_labels = ['1- Younger: < 38', '2- A little less young: 38 < 53', '3- Moderate: 53 < 68',
-                  '4- A little old: 68 < 84',
-                  '5- Older 84 < 99']
-    report5 = pd.DataFrame(
-        pd.cut(results_merge_data_add_info.loc[results_merge_data_add_info['Age'] != -1, 'Age'], bins=5,
-               labels=mpg_labels))
+    mpg_labels = ['Younger: < 38', 'A little less young: 38 < 53', 'Moderate: 53 < 68', 'A little old: 68 < 84',
+                  'Older 84 < 99']
+    report5 = pd.DataFrame(pd.cut(results_merge_data_add_info.loc[results_merge_data_add_info['Age'] != -1, 'Age'], bins=5, labels=mpg_labels))
     report5 = pd.DataFrame(report5.groupby('Age')['Age'].count())
-    report5.rename(columns={'Age': 'Age_group', 'Age': 'Age'}, inplace=True)
-    report5['Percentage'] = round(report5.Age / sum(report5.Age) * 100, 1)
+    report5.rename(columns={'Age': 'Age_group', 'Age': 'Age_count'}, inplace=True)
+    report5['Percentage'] = round(report5.Age_count / sum(report5.Age_count) * 100, 1)
+    report5 = report5.reset_index()
+    report5.index += 1
+    report5.rename(columns={'Age': 'Age_group'}, inplace=True)
     reports.append('report5')
 
     image5 = results_merge_data_add_info.loc[results_merge_data_add_info['Age'] != -1, 'Age'].hist(bins=5,
@@ -45,6 +49,8 @@ def report(results_merge_data_add_info):
     report6.rename(columns={'Name': 'Count'}, inplace=True)
     report6['Percentage'] = round(report6.Count / sum(report6.Count) * 100, 1)
     report6 = report6.head(10)
+    report6 = report6.reset_index()
+    report6.index += 1
     reports.append('report6')
 
     css = """
